@@ -1,15 +1,31 @@
 <?PHP
+// echo __line__."\n";
+// function __autoload( $classname) {
+// echo $classname."\n";
+	// if (class_exists('/home/sean/php/tests/' . strtolower($classname) . '.php')) {
+		// require ('/home/sean/php/tests/' . strtolower($classname) . '.php');
+	// }
+	// if (class_exists('/home/sean/php/common/' . strtolower($classname) . '.php')) {
+		// require ('/home/sean/php/common/' . strtolower($classname) . '.php');
+	// }
+// }
 
+include 'tap.php';
+include '../common/orm.php';
 
-//Handles MySQL functionality.
-class Db {
-    public $select_limit = 200;
-
-    //Obtain a MySqli link
-    function getDao( $dbname = 'seandb', $host = 'localhost', $username = 'seandb', $password = '_MgpCev6jbNYNlYUldQO' ) {
-        return mysqli_connect( $host, $username, $password, $dbname);
-    }
-    
+class Tests_Orm extends Tap {
+	function test() {
+		$db_params = array (
+			'dbname' => 'seandb',
+			'host' => 'localhost',
+			'username' => 'seandb',
+			'password' => '_MgpCev6jbNYNlYUldQO'
+		);
+		Tap::is_instance_of('db successfully initializes', 'Db', 'getDao', $db_params, 'mysqli');
+		Tap::is_instance_of('db successfully initializes', 'Db', 'getDao', $db_params, 'mysqli');
+		Tap::is_instance_of('db successfully initializes', 'Db', 'getDao', $db_params, 'pdo');
+	}
+	
     //Truncate all tables; Useful for testing.
 	function reInit() {
 		$dao = $this->getDao();
@@ -161,3 +177,7 @@ class Db {
 		return $substring;
 	}
 }
+
+
+$orm = new Tests_Orm();
+$orm->test();
