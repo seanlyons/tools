@@ -13,7 +13,15 @@ class Tap {
 		list($counter, $passed, $failed) = array($this->counter, $this->passed, $this->failed);
 		echo "\n$counter tests run: $passed passed, $failed failed.\n\n";
 	}
-
+    /**
+    * Check to see if the given method returns the expected output, provided optional input.
+    * @param	$msg				string  A description of the test; echoed as it is run.
+    * @param	$class_name			string  The name of the class containing the method to be tested.
+    * @param 	$function_name		string	The name of the method to be tested.
+    * @param 	$expected_output	mixed   The value of the expected output
+    * @param 	$input				mixed   //TODO: Currently only takes one parameter; make it take indefinite params.
+	* @return	none
+    **/
 	function is($msg, $class_name, $function_name, $expected_output = NULL, $input = NULL) {
         if ($this->debug === TRUE) { print_r(array($msg, $class_name, $function_name, $expected_output, $input)); }
 		if ($this->checkClassAndMethod($class_name, $function_name) === FALSE) {
@@ -38,7 +46,16 @@ class Tap {
 		}
 		echo '#' . ++$this->counter . " $msg: $outcome";
 	}
-	
+
+    /**
+    * Check to see if the given method returns an object of the expected type.
+    * @param	$msg				string  A description of the test; echoed as it is run.
+    * @param	$class_name			string  The name of the class containing the method to be tested.
+    * @param 	$function_name		string	The name of the method to be tested.
+    * @param 	$expected_output	mixed   The value of the expected output
+    * @param 	$input				mixed   //TODO: Currently only takes one parameter; make it take indefinite params.
+	* @return	none
+    **/	
 	function is_instance_of($msg, $class_name, $function_name, $expected_output = NULL, $input = NULL) {
 		if ($this->checkClassAndMethod($class_name, $function_name) === FALSE) {
 			return;
@@ -59,6 +76,15 @@ class Tap {
 		echo '#' . ++$this->counter . " $msg: $outcome";
 	}	
 	
+    /**
+    * Check to see if the given method returns a resource of the expected type.
+    * @param	$msg				string  A description of the test; echoed as it is run.
+    * @param	$class_name			string  The name of the class containing the method to be tested.
+    * @param 	$function_name		string	The name of the method to be tested.
+    * @param 	$expected_output	mixed   The value of the expected output
+    * @param 	$input				mixed   //TODO: Currently only takes one parameter; make it take indefinite params.
+	* @return	none
+    **/	
 	function is_resource_type($msg, $class_name, $function_name, $expected_resource_type = NULL, $input = NULL) {
 		if ($this->checkClassAndMethod($class_name, $function_name) === FALSE) {
 			return;
@@ -82,6 +108,15 @@ class Tap {
 		print_r($returned);		
 	}
 	
+    /**
+    * Prints output from the specified function: good for debugging.
+    * @param	$msg				string  A description of the test; echoed as it is run.
+    * @param	$class_name			string  The name of the class containing the method to be tested.
+    * @param 	$function_name		string	The name of the method to be tested.
+    * @param 	$expected_output	mixed   The value of the expected output
+    * @param 	$input				mixed   //TODO: Currently only takes one parameter; make it take indefinite params.
+	* @return	none
+    **/	
 	function check($msg, $class_name, $function_name, $expected_output = NULL, $input = NULL) {
 		if ($this->checkClassAndMethod($class_name, $function_name) === FALSE) {
 			return;
