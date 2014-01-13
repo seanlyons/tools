@@ -21,21 +21,29 @@ class Tests_Orm extends Tap {
 			'username' => 'seandb',
 			'password' => '_MgpCev6jbNYNlYUldQO'
 		);
-		Tap::is_instance_of('db successfully initializes', 'Db', 'getDao', $db_params, 'mysqli');
-		Tap::is_instance_of('db successfully initializes', 'Db', 'getDao', $db_params, 'mysqli');
-		Tap::is_instance_of('db successfully initializes', 'Db', 'getDao', $db_params, 'pdo');
-	}
-	
-    //Truncate all tables; Useful for testing.
-	function reInit() {
-		$dao = $this->getDao();
-			
-		if (mysqli_connect_errno( $dao )) {
-			throw new Exception ( "Failed to make connection: ".mysqli_connect_error() );
-		}	
-	
-		mysqli_query( $dao, 'truncate table Classes; truncate table Students; truncate table Student_classes; truncate table Professors;' );	
-		return array('status' => 'all tables truncated!');
+		Tap::is_instance_of('db successfully initializes', 'Db', 'getDao', 'mysqli', array($db_params));
+        $all_tables = array('Classes', 'Professors', 'Student_classes', 'Students');
+		Tap::is('read existing tables', 'Db', 'getAllTables', $all_tables, NULL);
+        // $no_tables = array('status' => false);
+        $table_name = 'taptest_table_' . Util::randString(10, 'lowercase');
+		
+		$creation_statement = 'CREATE TABLE `'. $table_name .'` ( `id` int(10) NOT NULL auto_increment, `test_str` varchar(128) NOT NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=2;';
+        Tap::is('create new table', 'Db', 'createTable', '1', array($creation_statement));
+		$all_tables[] = $table_name;
+		Tap::is('read existing tables', 'Db', 'getAllTables', $all_tables, NULL);
+		array_pop($all_tables);
+		//create row
+        array('');
+        //Tap::is('add a new row', 'Db', 'add', '', );
+        //read row
+        //update row
+        //read row
+        //delete row
+        //read row
+        
+        Tap::is('drop the random table created', 'Db', 'dropTable', $all_tables, $table_name);
+		Tap::is('read existing tables', 'Db', 'getAllTables', $all_tables, '');
+
 	}
 
     //Takes a query and executes it. Returns information on rows affected, and a data json blob.
