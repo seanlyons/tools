@@ -138,7 +138,7 @@ class Tap {
 		echo "#CHECKING: $msg: \n\t> $returned\n";
 	}
 
-#######################################################################################################################################	
+########################################################################
 	
 	
 	function retClass( $class_name ) {
@@ -156,4 +156,50 @@ class Tap {
 		}
 		return TRUE;
 	}
+	
+############################ WEB TESTS #################################
+
+	function web_ok( $url, $params, $expected_output ) {
+		if ($this->debug === TRUE) {
+			print_r(array($msg, $class_name, $function_name, $expected_output, $input));
+		}
+		
+		$params = http_build_query($params);
+		
+		$data = curl( $url . '?' . $params);
+		
+		print_r($data);
+		
+		return;
+		
+        if ( ! is_scalar($expected_output)) {
+            $expected_output = json_encode($expected_output);
+        }
+        if ( ! is_scalar($returned)) {
+            $returned = json_encode($returned);
+        }
+		if ($returned == $expected_output) {
+			$outcome = SUCCESS . "matched on `$returned`." . NL ;
+			$this->passed++;
+		} else {
+			$outcome = FAILURE . "Unmatched comparison: Expected `$expected_output`; received `$returned`." . NL;
+			$this->failed++;
+		}
+		echo '#' . ++$this->counter . " $msg: $outcome";
+	}	
+
+	function curl( $url, $post = NONE) {
+		$ch = curl_init();
+		
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_HEADER, TRUE);
+		curl_setopt($ch,CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+		
+		$head = curl_exec($ch);
+		
+		curl_close($ch);
+		
+		return $head;
+	}	
 }
