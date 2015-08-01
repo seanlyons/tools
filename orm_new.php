@@ -1,15 +1,4 @@
 <?PHP
-// echo __line__."\n";
-// function __autoload( $classname) {
-// echo $classname."\n";
-	// if (class_exists('/home/sean/php/tests/' . strtolower($classname) . '.php')) {
-		// require ('/home/sean/php/tests/' . strtolower($classname) . '.php');
-	// }
-	// if (class_exists('/home/sean/php/common/' . strtolower($classname) . '.php')) {
-		// require ('/home/sean/php/common/' . strtolower($classname) . '.php');
-	// }
-// }
-
 include 'tap.php';
 include '../common/orm.php';
 
